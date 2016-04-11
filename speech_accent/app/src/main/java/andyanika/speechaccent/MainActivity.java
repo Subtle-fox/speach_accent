@@ -19,9 +19,6 @@ public class MainActivity extends AppCompatActivity implements OnChangeFragmentL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
-
         getFragmentManager()
                 .beginTransaction()
                 .add(R.id.content_frame, new MainFragment(), String.valueOf(FRAGMENT_MAIN))
@@ -45,7 +42,6 @@ public class MainActivity extends AppCompatActivity implements OnChangeFragmentL
 
     @Override
     public void onChange(int fragmentId) {
-        //selectItem(fragmentId);
         Fragment fr = getFragment(fragmentId);
         getFragmentManager()
                 .beginTransaction()

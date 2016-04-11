@@ -11,15 +11,7 @@ import android.view.ViewGroup;
  * Created by Andrey Kolpakov on 11.04.2016
  * for It-Atlantic
  */
-public class MainFragment extends Fragment {
-    private OnChangeFragmentListener changeFragmentListener;
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        changeFragmentListener = (OnChangeFragmentListener) getActivity();
-    }
-
+public class MainFragment extends InterchangableFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fr_main, container, false);
