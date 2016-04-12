@@ -3,4 +3,18 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="green">#11b97a</color>
+    <color name="red">#FF0000</color>
+
+    <color name="primary_dark_text_color">#DD000000</color>
+    <color name="secondary_dark_text_color">#88000000</color>
+    <color name="disabled_dark_text_color">#5F000000</color>
+
+    <color name="primary_light_text_color">#FFFFFFFF</color>
+    <color name="secondary_light_text_color">#B2FFFFFF</color>
+    <color name="disabled_light_text_color">#80FFFFFF</color>
+
+    <color name="material_cardview_list_background">#EEEEEE</color>
+
 </resources>
