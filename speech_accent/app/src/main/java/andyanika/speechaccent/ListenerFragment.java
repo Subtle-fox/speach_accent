@@ -40,7 +40,7 @@ public class ListenerFragment extends InterchangableFragment {
 
         if (isPaused) {
             playbackTask = new Playback();
-            playbackTask.execute();
+            playbackTask.execute(seekBar.getProgress());
         }
 
         changePlayButtonView(!isPaused);
@@ -104,12 +104,15 @@ public class ListenerFragment extends InterchangableFragment {
     }
 
 
-    class Playback extends AsyncTask<Void, Integer, Void> {
+    class Playback extends AsyncTask<Integer, Integer, Void> {
         int progress = 1;
 
         @Override
-        protected Void doInBackground(Void... params) {
-            for (int i = 1; i <= 100; i++) {
+        protected Void doInBackground(Integer... params) {
+            for (int i = params[0]; i <= 100; i++) {
+                if (isCancelled()) {
+                    break;
+                }
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
