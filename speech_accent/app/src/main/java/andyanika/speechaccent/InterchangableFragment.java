@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Build;
+import android.os.Bundle;
+import android.view.View;
 
 /**
  * Created by kolpakov on 11/04/16.
@@ -25,5 +27,11 @@ public abstract class InterchangableFragment extends Fragment {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             changeFragmentListener = (OnChangeFragmentListener) activity;
         }
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setRetainInstance(true);
     }
 }

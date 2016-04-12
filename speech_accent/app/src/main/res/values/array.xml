@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array
+        name="language_list">
+        <item>Английский</item>
+        <item>Испанский</item>
+        <item>Китайский</item>
+        <item>Русский</item>
+        <item>Французский</item>
+    </string-array>
+
+    <string-array
+        name="accent_list">
+        <item>Носитель языка</item>
+        <item>Англичанин</item>
+        <item>Испанец</item>
+        <item>Китаец</item>
+        <item>Русский</item>
+        <item>Француз</item>
+    </string-array>
+</resources>

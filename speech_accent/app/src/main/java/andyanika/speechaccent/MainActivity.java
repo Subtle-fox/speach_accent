@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,16 +14,32 @@ public class MainActivity extends AppCompatActivity implements OnChangeFragmentL
     final static int FRAGMENT_LISTEN = 2110;
     final static int FRAGMENT_RECORD = 2120;
 
+    private static final String FRAGMENT_ID = "current_fragment_id";
+
     int currentFragmentId = FRAGMENT_MAIN;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getFragmentManager()
-                .beginTransaction()
-                .add(R.id.content_frame, new MainFragment(), String.valueOf(FRAGMENT_MAIN))
-                .commit();
+
+        if (savedInstanceState != null) {
+            currentFragmentId = savedInstanceState.getInt(FRAGMENT_ID, FRAGMENT_MAIN);
+        } else {
+
+            selectItem(currentFragmentId);
+        }
+//        getFragmentManager()
+//                .beginTransaction()
+//                .add(R.id.content_frame, getFragment(currentFragmentId), String.valueOf(currentFragmentId))
+//                .commit();
+
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(FRAGMENT_ID, currentFragmentId);
     }
 
     @Override
@@ -42,18 +59,22 @@ public class MainActivity extends AppCompatActivity implements OnChangeFragmentL
 
     @Override
     public void onChange(int fragmentId) {
+//        selectItem(fragmentId);
+//        if (fragmentId == currentFragmentId) {
+//            return;
+//        }
+        currentFragmentId = fragmentId;
+
         Fragment fr = getFragment(fragmentId);
-        getFragmentManager()
-                .beginTransaction()
-                .replace(R.id.content_frame, fr, String.valueOf(fragmentId))
-                .commit();
+        FragmentTransaction tr = getFragmentManager().beginTransaction();
+        tr.replace(R.id.content_frame, fr, String.valueOf(fragmentId));
+        if (fragmentId != FRAGMENT_MAIN) {
+            tr.addToBackStack(null);
+        }
+        tr.commit();
     }
 
     private void selectItem(int fragmentId) {
-        if (fragmentId == currentFragmentId) {
-            return;
-        }
-
         FragmentManager fragmentManager = getFragmentManager();
         Fragment frToShow = fragmentManager.findFragmentByTag(String.valueOf(fragmentId));
         Fragment frToHide = fragmentManager.findFragmentByTag(String.valueOf(currentFragmentId));
