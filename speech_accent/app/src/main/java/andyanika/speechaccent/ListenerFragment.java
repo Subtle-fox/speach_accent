@@ -44,8 +44,6 @@ public class ListenerFragment extends InterchangableFragment {
         }
 
         changePlayButtonView(!isPaused);
-
-        //changeFragmentListener.onChange(MainActivity.FRAGMENT_MAIN);
     }
 
     @InjectView(R.id.spinner_language)

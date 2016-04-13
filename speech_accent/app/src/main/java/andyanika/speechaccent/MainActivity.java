@@ -26,14 +26,8 @@ public class MainActivity extends AppCompatActivity implements OnChangeFragmentL
         if (savedInstanceState != null) {
             currentFragmentId = savedInstanceState.getInt(FRAGMENT_ID, FRAGMENT_MAIN);
         } else {
-
             selectItem(currentFragmentId);
         }
-//        getFragmentManager()
-//                .beginTransaction()
-//                .add(R.id.content_frame, getFragment(currentFragmentId), String.valueOf(currentFragmentId))
-//                .commit();
-
     }
 
     @Override

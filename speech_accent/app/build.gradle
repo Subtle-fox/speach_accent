@@ -4,6 +4,15 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
 
+    signingConfigs {
+        sign {
+            storeFile file("../android_key_store.jks")
+            storePassword "android_key_store"
+            keyAlias "speech_accent"
+            keyPassword "speech_accent"
+        }
+    }
+
     defaultConfig {
         applicationId "andyanika.speechaccent"
         minSdkVersion 15
@@ -13,8 +22,14 @@ android {
     }
     buildTypes {
         release {
+            signingConfig signingConfigs.sign
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            signingConfig null
+            debuggable true
         }
     }
 }
