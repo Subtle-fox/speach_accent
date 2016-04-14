@@ -73,7 +73,7 @@ public class RingChart extends View {
         canvas.drawArc(rect, START_ANGLE_POINT, angle, false, valuePaint);
     }
 
-    public void setValue(int percent) {
+    public void setProgress(int percent) {
         if (percent <= 0) {
             percent = 1;
         } else if (percent > 100) {

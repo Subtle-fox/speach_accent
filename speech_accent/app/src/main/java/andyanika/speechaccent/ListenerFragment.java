@@ -1,5 +1,6 @@
 package andyanika.speechaccent;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,7 +11,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -19,8 +19,11 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 
 public class ListenerFragment extends InterchangableFragment {
+    private static final String PLAY_PROGRESS = "play_progress";
+
     private boolean isPaused = true;
     private Playback playbackTask;
+    private int progress;
 
     @InjectView(R.id.ring_chart)
     RingChart ringChart;
@@ -36,11 +39,17 @@ public class ListenerFragment extends InterchangableFragment {
         if (playbackTask != null) {
             playbackTask.cancel(true);
             playbackTask = null;
+
+            getActivity().startService(new Intent(getActivity(), MediaPlayback.class).setAction(MediaPlayback.ACTION_STOP));
         }
 
         if (isPaused) {
+            Intent play = new Intent(getActivity().getApplicationContext(), MediaPlayback.class).setAction(MediaPlayback.ACTION_PLAY);
+            getActivity().startService(play);
+
             playbackTask = new Playback();
-            playbackTask.execute(seekBar.getProgress());
+            playbackTask.execute(progress);
+
         }
 
         changePlayButtonView(!isPaused);
@@ -61,6 +70,12 @@ public class ListenerFragment extends InterchangableFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.inject(this, view);
+
+        if (savedInstanceState != null) {
+            progress = savedInstanceState.getInt(PLAY_PROGRESS);
+            seekBar.setProgress(progress);
+            ringChart.setProgress(progress);
+        }
 
         spinnerLanguage.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.language_list)));
         spinnerLanguage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -101,6 +116,11 @@ public class ListenerFragment extends InterchangableFragment {
         return true;
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(PLAY_PROGRESS, progress);
+    }
 
     class Playback extends AsyncTask<Integer, Integer, Void> {
         int progress = 1;
@@ -123,8 +143,9 @@ public class ListenerFragment extends InterchangableFragment {
 
         @Override
         protected void onProgressUpdate(Integer... values) {
-            seekBar.setProgress(values[0]);
-            ringChart.setValue(values[0]);
+            progress = values[0];
+            seekBar.setProgress(progress);
+            ringChart.setProgress(progress);
         }
     }
 }
