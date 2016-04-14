@@ -14,15 +14,18 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
-import java.io.FileDescriptor;
 import java.io.IOException;
 
 /**
  * Created by Andrey Kolpakov on 14.04.2016
  * for It-Atlantic
  */
-public class MediaPlayback extends Service
-        implements MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener, AudioManager.OnAudioFocusChangeListener {
+public class MediaPlayback extends Service implements
+        MediaPlayer.OnPreparedListener,
+        MediaPlayer.OnErrorListener,
+        AudioManager.OnAudioFocusChangeListener,
+        MediaPlayer.OnCompletionListener {
+
     MediaPlayer mediaPlayer;
 
     private static final int NOTIFICATION_ID = 5050;
@@ -46,7 +49,7 @@ public class MediaPlayback extends Service
                     mediaPlayer.reset();
                 }
 
-                play(this, R.raw.china_china_dekun_0_1_0__0);
+                play(this, R.raw.china_china_dekun_0_0_1);
                 break;
             case ACTION_PAUSE:
                 pause();
@@ -61,14 +64,13 @@ public class MediaPlayback extends Service
     }
 
     void play(Context ctx, @RawRes int rawFileId) {
-        AssetFileDescriptor afd = ctx.getResources().openRawResourceFd(rawFileId);
         try {
-//            AssetFileDescriptor afd = ctx.getAssets().openFd("data/data/china_china_dekun_0_0_1");
-            FileDescriptor fd = afd.getFileDescriptor();
+            AssetFileDescriptor afd = ctx.getResources().openRawResourceFd(rawFileId);
             mediaPlayer = new MediaPlayer();
-            mediaPlayer.setDataSource(fd);
+            mediaPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
             mediaPlayer.setOnPreparedListener(this);
             mediaPlayer.setOnErrorListener(this);
+            mediaPlayer.setOnCompletionListener(this);
             mediaPlayer.prepareAsync();
         } catch (IOException e) {
             e.printStackTrace();
@@ -96,7 +98,7 @@ public class MediaPlayback extends Service
         int result = audioManager.requestAudioFocus(this, AudioManager.STREAM_MUSIC,
                 AudioManager.AUDIOFOCUS_GAIN);
 
-        if (result != AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+        if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
             mp.start();
             showNotification();
         } else {
@@ -132,7 +134,7 @@ public class MediaPlayback extends Service
                         .setSmallIcon(android.R.drawable.ic_media_play)
                         .setContentTitle("Проигрывается")
                         .setContentText("название")
-                        .setProgress(0, 0, true)
+                        .setContentIntent(pi)
                         .setOngoing(true)
                         .setCategory(NotificationCompat.CATEGORY_PROGRESS);
 
@@ -145,5 +147,10 @@ public class MediaPlayback extends Service
 
     void cancelNotification() {
         stopForeground(true);
+    }
+
+    @Override
+    public void onCompletion(MediaPlayer mp) {
+        cancelNotification();
     }
 }
