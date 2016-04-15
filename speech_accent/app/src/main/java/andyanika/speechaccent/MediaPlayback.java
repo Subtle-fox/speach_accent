@@ -1,22 +1,16 @@
 package andyanika.speechaccent;
 
-import android.app.Activity;
-import android.app.PendingIntent;
-import android.app.Service;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.os.IBinder;
-import android.support.annotation.Nullable;
-import android.support.annotation.RawRes;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by Andrey Kolpakov on 14.04.2016
@@ -28,14 +22,20 @@ public class MediaPlayback implements
         AudioManager.OnAudioFocusChangeListener,
         MediaPlayer.OnCompletionListener {
 
-    private MediaPlayer mediaPlayer;
-    private Context ctx;
+    private final Context ctx;
+    private final PlayerCallback playerCallback;
 
-    public MediaPlayback(Context ctx) {
+    private MediaPlayer mediaPlayer;
+    private Timer playNotificator;
+    private boolean isPaused;
+
+    public MediaPlayback(Context ctx, PlayerCallback playerCallback) {
         this.ctx = ctx;
+        this.playerCallback = playerCallback;
     }
 
     public void play(String languageId, String accentFileNameId) {
+        isPaused = false;
         try {
             String fn = languageId + File.separator + accentFileNameId;
             AssetFileDescriptor afd = ctx.getAssets().openFd(fn);
@@ -47,43 +47,50 @@ public class MediaPlayback implements
             mediaPlayer.setOnCompletionListener(this);
             mediaPlayer.prepareAsync();
         } catch (IOException e) {
-            e.printStackTrace();
             Toast.makeText(ctx, "Упс... :( Не удалось открыть звукозапись", Toast.LENGTH_SHORT).show();
-
-            if (mediaPlayer != null) {
-                mediaPlayer.reset();
-            }
+            reset();
+            e.printStackTrace();
         }
     }
 
     public void stop() {
-        if (mediaPlayer != null) {
-            mediaPlayer.stop();
-        }
+        reset();
     }
 
     public void pause() {
+        isPaused = true;
         mediaPlayer.pause();
     }
 
+    public void resume() {
+        isPaused = false;
+        mediaPlayer.start();
+    }
+
     @Override
-    public void onPrepared(MediaPlayer mp) {
+    public void onPrepared(final MediaPlayer mp) {
         AudioManager audioManager = (AudioManager) ctx.getSystemService(Context.AUDIO_SERVICE);
         int result = audioManager.requestAudioFocus(this, AudioManager.STREAM_MUSIC,
                 AudioManager.AUDIOFOCUS_GAIN);
 
         if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
             mp.start();
+            playerCallback.onStarted(mp.getDuration());
+            playNotificator = new Timer();
+            playNotificator.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    playerCallback.onPlaying(mediaPlayer.getCurrentPosition());
+                }
+            }, 1000, 1000);
         } else {
-            mediaPlayer.reset();
+            reset();
         }
     }
 
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra) {
-        if (mediaPlayer != null) {
-            mediaPlayer.reset();
-        }
+        reset();
         Log.w(getClass().getSimpleName(), "media player failed t init with error: " + what);
         return true;
     }
@@ -92,13 +99,33 @@ public class MediaPlayback implements
     public void onAudioFocusChange(int focusChange) {
         if (focusChange == AudioManager.AUDIOFOCUS_GAIN) {
             mediaPlayer.start();
+            playerCallback.onStarted(mediaPlayer.getDuration());
         } else {
-            mediaPlayer.reset();
+            reset();
         }
     }
 
     @Override
     public void onCompletion(MediaPlayer mp) {
+        playerCallback.onFinished();
+    }
 
+    private void reset() {
+        isPaused = false;
+
+        if (mediaPlayer != null) {
+            mediaPlayer.reset();
+        }
+
+        if (playNotificator != null) {
+            playNotificator.cancel();
+            playNotificator = null;
+        }
+
+        playerCallback.onFinished();
+    }
+
+    public boolean isPaused() {
+        return isPaused;
     }
 }

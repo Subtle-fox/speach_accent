@@ -27,8 +27,8 @@ public class RingChart extends View {
         desiredSize = (int) (desiredSize * getResources().getDisplayMetrics().density);
         strokeWidth = (int) (strokeWidth * getResources().getDisplayMetrics().density);
 
-        backgroundPaint = createColor(strokeWidth, getResources().getColor(R.color.colorAccent));
-        valuePaint = createColor(strokeWidth, getResources().getColor(R.color.colorPrimary));
+        backgroundPaint = createColor(strokeWidth, getResources().getColor(R.color.colorPrimary));
+        valuePaint = createColor(strokeWidth, getResources().getColor(R.color.colorAccent));
         rect = new RectF(strokeWidth, strokeWidth, desiredSize - strokeWidth, desiredSize - strokeWidth);
     }
 
@@ -74,17 +74,13 @@ public class RingChart extends View {
     }
 
     public void setProgress(int percent) {
-        if (percent <= 0) {
-            percent = 1;
+        if (percent < 0) {
+            percent = 0;
         } else if (percent > 100) {
             percent = 100;
         }
 
         angle = 3.6f * percent;
-
-//        int red = Math.min((100 - percent) * 5, 225);
-//        int green = Math.min(percent * 5, 225);
-//        valuePaint.setColor(Color.argb(255, red, green, 0));
         requestLayout();
     }
 

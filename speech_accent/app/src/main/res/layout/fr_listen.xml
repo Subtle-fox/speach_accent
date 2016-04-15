@@ -85,7 +85,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/default_margin"
                 android:gravity="fill_horizontal"
-                android:text="@string/ru_sample_text"
+                android:text=""
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
         </LinearLayout>
