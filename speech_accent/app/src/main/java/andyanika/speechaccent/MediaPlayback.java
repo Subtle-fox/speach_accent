@@ -1,5 +1,6 @@
 package andyanika.speechaccent;
 
+import android.app.Activity;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
@@ -14,58 +15,31 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.io.File;
 import java.io.IOException;
 
 /**
  * Created by Andrey Kolpakov on 14.04.2016
  * for It-Atlantic
  */
-public class MediaPlayback extends Service implements
+public class MediaPlayback implements
         MediaPlayer.OnPreparedListener,
         MediaPlayer.OnErrorListener,
         AudioManager.OnAudioFocusChangeListener,
         MediaPlayer.OnCompletionListener {
 
-    MediaPlayer mediaPlayer;
+    private MediaPlayer mediaPlayer;
+    private Context ctx;
 
-    private static final int NOTIFICATION_ID = 5050;
-
-    static final String ACTION_PLAY = "com.example.action.PLAY";
-    static final String ACTION_PAUSE = "com.example.action.PAUSE";
-    static final String ACTION_STOP = "com.example.action.STOP";
-    static final String ACTION_RESUME = "com.example.action.RESUME";
-
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
+    public MediaPlayback(Context ctx) {
+        this.ctx = ctx;
     }
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        switch (intent.getAction()) {
-            case ACTION_PLAY:
-                if (mediaPlayer != null) {
-                    mediaPlayer.reset();
-                }
-
-                play(this, R.raw.china_china_dekun_0_0_1);
-                break;
-            case ACTION_PAUSE:
-                pause();
-                break;
-            case ACTION_STOP:
-                stop();
-                break;
-            case ACTION_RESUME:
-                break;
-        }
-        return super.onStartCommand(intent, flags, startId);
-    }
-
-    void play(Context ctx, @RawRes int rawFileId) {
+    public void play(String languageId, String accentFileNameId) {
         try {
-            AssetFileDescriptor afd = ctx.getResources().openRawResourceFd(rawFileId);
+            String fn = languageId + File.separator + accentFileNameId;
+            AssetFileDescriptor afd = ctx.getAssets().openFd(fn);
+
             mediaPlayer = new MediaPlayer();
             mediaPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
             mediaPlayer.setOnPreparedListener(this);
@@ -82,25 +56,24 @@ public class MediaPlayback extends Service implements
         }
     }
 
-    void stop() {
-        mediaPlayer.stop();
-        cancelNotification();
+    public void stop() {
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+        }
     }
 
-    void pause() {
+    public void pause() {
         mediaPlayer.pause();
-        pauseNotification();
     }
 
     @Override
     public void onPrepared(MediaPlayer mp) {
-        AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        AudioManager audioManager = (AudioManager) ctx.getSystemService(Context.AUDIO_SERVICE);
         int result = audioManager.requestAudioFocus(this, AudioManager.STREAM_MUSIC,
                 AudioManager.AUDIOFOCUS_GAIN);
 
         if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
             mp.start();
-            showNotification();
         } else {
             mediaPlayer.reset();
         }
@@ -124,33 +97,8 @@ public class MediaPlayback extends Service implements
         }
     }
 
-    void showNotification() {
-        PendingIntent pi = PendingIntent.getActivity(getApplicationContext(), 0,
-                new Intent(getApplicationContext(), MainActivity.class),
-                PendingIntent.FLAG_UPDATE_CURRENT);
-
-        final NotificationCompat.Builder builder =
-                new NotificationCompat.Builder(this)
-                        .setSmallIcon(android.R.drawable.ic_media_play)
-                        .setContentTitle("Проигрывается")
-                        .setContentText("название")
-                        .setContentIntent(pi)
-                        .setOngoing(true)
-                        .setCategory(NotificationCompat.CATEGORY_PROGRESS);
-
-        startForeground(NOTIFICATION_ID, builder.build());
-    }
-
-    void pauseNotification() {
-        stopForeground(false);
-    }
-
-    void cancelNotification() {
-        stopForeground(true);
-    }
-
     @Override
     public void onCompletion(MediaPlayer mp) {
-        cancelNotification();
+
     }
 }

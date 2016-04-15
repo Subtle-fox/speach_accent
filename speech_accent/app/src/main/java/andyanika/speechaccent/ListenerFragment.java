@@ -1,8 +1,8 @@
 package andyanika.speechaccent;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
@@ -24,6 +25,8 @@ public class ListenerFragment extends InterchangableFragment {
     private boolean isPaused = true;
     private Playback playbackTask;
     private int progress;
+    private MediaPlayback mediaPlayback;
+    private AccentAdapter accentAdapter;
 
     @InjectView(R.id.ring_chart)
     RingChart ringChart;
@@ -39,17 +42,15 @@ public class ListenerFragment extends InterchangableFragment {
         if (playbackTask != null) {
             playbackTask.cancel(true);
             playbackTask = null;
-
-            getActivity().startService(new Intent(getActivity(), MediaPlayback.class).setAction(MediaPlayback.ACTION_STOP));
+            mediaPlayback.stop();
         }
 
         if (isPaused) {
-            Intent play = new Intent(getActivity().getApplicationContext(), MediaPlayback.class).setAction(MediaPlayback.ACTION_PLAY);
-            getActivity().startService(play);
-
+            String languageId = getResources().getStringArray(R.array.language_ids)[spinnerLanguage.getSelectedItemPosition()];
+            String fileName = accentAdapter.getAccentFileName(spinnerAccent.getSelectedItemPosition());
+            mediaPlayback.play(languageId, fileName);
             playbackTask = new Playback();
             playbackTask.execute(progress);
-
         }
 
         changePlayButtonView(!isPaused);
@@ -88,6 +89,8 @@ public class ListenerFragment extends InterchangableFragment {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+
+        mediaPlayback = new MediaPlayback(getActivity());
     }
 
     private void changePlayButtonView(boolean isPlaying) {
@@ -102,18 +105,29 @@ public class ListenerFragment extends InterchangableFragment {
     private void updateAccentList(int languageId) {
         spinnerAccent.setVisibility(View.VISIBLE);
 
-        ArrayList<String> accents = new ArrayList<>();
-        for (String accent : getResources().getStringArray(R.array.accent_list)) {
-            if (hasAccent(languageId, accent)) {
-                accents.add(accent);
-            }
-        }
-
-        spinnerAccent.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, accents));
+        String[] accentIds = getResources().getStringArray(R.array.accent_ids);
+        accentAdapter = new AccentAdapter(getActivity(), android.R.layout.simple_spinner_dropdown_item, getAvailableAccentIds(languageId, accentIds));
+        spinnerAccent.setAdapter(accentAdapter);
     }
 
-    private boolean hasAccent(int languageId, String accent) {
-        return true;
+    private ArrayList<Pair<Integer, String>> getAvailableAccentIds(int languageId, String[] accentIds) {
+        String languageFolder = getResources().getStringArray(R.array.language_ids)[languageId];
+        ArrayList<Pair<Integer, String>> result = new ArrayList<>();
+        try {
+            String[] accentFiles = getResources().getAssets().list(languageFolder);
+            for (int i = 0; i < accentFiles.length; i++) {
+                for (int j = 0; j < accentIds.length; j++) {
+                    if (accentFiles[i].startsWith(accentIds[j], languageFolder.length() + 1)) {
+                        result.add(Pair.create(j, accentFiles[i]));
+                    }
+                }
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return result;
     }
 
     @Override
@@ -147,5 +161,20 @@ public class ListenerFragment extends InterchangableFragment {
             seekBar.setProgress(progress);
             ringChart.setProgress(progress);
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mediaPlayback.stop();
+
+        changePlayButtonView(false);
+        if (playbackTask != null) {
+            playbackTask.cancel(false);
+        }
+    }
+
+    private String getCurrentLanguageFolder(int selectedLanguage) {
+        return getResources().getStringArray(R.array.language_ids)[selectedLanguage];
     }
 }
