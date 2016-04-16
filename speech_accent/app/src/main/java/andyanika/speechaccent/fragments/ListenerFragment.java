@@ -23,6 +23,7 @@ import andyanika.speechaccent.MediaPlayback;
 import andyanika.speechaccent.PlayerCallback;
 import andyanika.speechaccent.R;
 import andyanika.speechaccent.RingChart;
+import andyanika.speechaccent.utils.SampleTextBuilder;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
@@ -85,26 +86,8 @@ public class ListenerFragment extends InterchangableFragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 updateAccentList(position);
-
-                @StringRes int sampleTextId = R.string.ru_sample_text;
-                switch (getResources().getStringArray(R.array.language_ids)[position]) {
-                    case "eng":
-                        sampleTextId = R.string.en_sample_text;
-                        break;
-                    case "rus":
-                        sampleTextId = R.string.ru_sample_text;
-                        break;
-                    case "china":
-                        sampleTextId = R.string.ch_sample_text;
-                        break;
-                    case "span":
-                        sampleTextId = R.string.sp_sample_text;
-                        break;
-                    case "french":
-                        sampleTextId = R.string.fr_sample_text;
-                        break;
-                }
-                sampleText.setText(sampleTextId);
+                sampleText.setText(
+                        SampleTextBuilder.getStringResource(getResources().getStringArray(R.array.language_ids)[position]));
             }
 
             @Override

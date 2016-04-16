@@ -13,9 +13,9 @@ import andyanika.speechaccent.fragments.MainFragment;
 import andyanika.speechaccent.fragments.RecordFragment;
 
 public class MainActivity extends AppCompatActivity implements OnChangeFragmentListener {
-    final static int FRAGMENT_MAIN = 2100;
-    final static int FRAGMENT_LISTEN = 2110;
-    final static int FRAGMENT_RECORD = 2120;
+    public final static int FRAGMENT_MAIN = 2100;
+    public final static int FRAGMENT_LISTEN = 2110;
+    public final static int FRAGMENT_RECORD = 2120;
 
     private static final String FRAGMENT_ID = "current_fragment_id";
 
