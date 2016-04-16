@@ -11,6 +11,7 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import andyanika.speechaccent.LanguageAdapter;
 import andyanika.speechaccent.R;
 import andyanika.speechaccent.RingChart;
 import andyanika.speechaccent.utils.SampleTextBuilder;
@@ -83,6 +84,9 @@ public class RecordFragment extends InterchangableFragment {
         }
         seekBar.setProgress(progress);
         ringChart.setProgress(progress);
+
+        spinnerNativeLanguage.setAdapter(new LanguageAdapter(getActivity(), android.R.layout.simple_spinner_dropdown_item,
+                getResources().getStringArray(R.array.language_ids)));
 
         spinnerRecordLanguage.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.language_list)));
         spinnerRecordLanguage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

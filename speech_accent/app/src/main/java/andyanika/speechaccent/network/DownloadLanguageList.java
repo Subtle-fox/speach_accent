@@ -15,16 +15,14 @@ import okhttp3.Response;
 public class DownloadLanguageList {
     OkHttpClient client = new OkHttpClient();
 
-    public LanguageListJson downloadLanguageList() throws IOException {
-        String url = "apps.engine/download_lang.json";
+    public String downloadLanguageList() throws IOException {
+        String url = "http://apps.engine.com/download_lang.json";
         Request request = new Request.Builder()
                 .url(url)
                 .build();
 
         Response response = client.newCall(request).execute();
         String raw = response.body().string();
-
-        LanguageListJson result = new Gson().fromJson(raw, LanguageListJson.class);
-        return result;
+        return raw;
     }
 }

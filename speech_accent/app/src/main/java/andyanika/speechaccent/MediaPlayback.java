@@ -59,12 +59,16 @@ public class MediaPlayback implements
 
     public void pause() {
         isPaused = true;
-        mediaPlayer.pause();
+        if (mediaPlayer != null) {
+            mediaPlayer.pause();
+        }
     }
 
     public void resume() {
         isPaused = false;
-        mediaPlayer.start();
+        if (mediaPlayer != null) {
+            mediaPlayer.start();
+        }
     }
 
     @Override

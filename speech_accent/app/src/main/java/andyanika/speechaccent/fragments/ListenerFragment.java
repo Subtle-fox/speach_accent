@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import andyanika.speechaccent.AccentAdapter;
+import andyanika.speechaccent.LanguageAdapter;
 import andyanika.speechaccent.MediaPlayback;
 import andyanika.speechaccent.PlayerCallback;
 import andyanika.speechaccent.R;
@@ -35,6 +36,7 @@ public class ListenerFragment extends InterchangableFragment {
     private int progress;
     private MediaPlayback mediaPlayback;
     private AccentAdapter accentAdapter;
+    private LanguageAdapter languageAdapter;
 
     @InjectView(R.id.ring_chart)
     RingChart ringChart;
@@ -81,7 +83,9 @@ public class ListenerFragment extends InterchangableFragment {
         seekBar.setClickable(false);
         ringChart.setProgress(progress);
 
-        spinnerLanguage.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.language_list)));
+
+        languageAdapter = new LanguageAdapter(getActivity(), android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.language_ids));
+        spinnerLanguage.setAdapter(languageAdapter);
         spinnerLanguage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -116,7 +120,7 @@ public class ListenerFragment extends InterchangableFragment {
         } else {
             stop();
 
-            String languageId = getResources().getStringArray(R.array.language_ids)[spinnerLanguage.getSelectedItemPosition()];
+            String languageId = languageAdapter.getLanguageId(spinnerLanguage.getSelectedItemPosition());
             String fileName = accentAdapter.getAccentFileName(spinnerAccent.getSelectedItemPosition());
             mediaPlayback.play(languageId, fileName);
         }

@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import andyanika.speechaccent.fragments.ListenerFragment;
 import andyanika.speechaccent.fragments.MainFragment;
 import andyanika.speechaccent.fragments.RecordFragment;
+import andyanika.speechaccent.network.DownloadTask;
 
 public class MainActivity extends AppCompatActivity implements OnChangeFragmentListener {
     public final static int FRAGMENT_MAIN = 2100;
@@ -31,6 +32,8 @@ public class MainActivity extends AppCompatActivity implements OnChangeFragmentL
         } else {
             selectItem(currentFragmentId);
         }
+
+        new DownloadTask().execute();
     }
 
     @Override
