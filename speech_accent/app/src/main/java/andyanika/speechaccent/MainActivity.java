@@ -53,10 +53,6 @@ public class MainActivity extends AppCompatActivity implements OnChangeFragmentL
 
     @Override
     public void onChange(int fragmentId) {
-//        selectItem(fragmentId);
-//        if (fragmentId == currentFragmentId) {
-//            return;
-//        }
         currentFragmentId = fragmentId;
 
         Fragment fr = getFragment(fragmentId);
@@ -96,6 +92,15 @@ public class MainActivity extends AppCompatActivity implements OnChangeFragmentL
             case FRAGMENT_MAIN:
             default:
                 return new MainFragment();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (currentFragmentId == FRAGMENT_MAIN) {
+            super.onBackPressed();
+        } else {
+            onChange(FRAGMENT_MAIN);
         }
     }
 }
