@@ -7,8 +7,6 @@ import android.media.MediaPlayer;
 import android.util.Log;
 import android.widget.Toast;
 
-import java.io.File;
-import java.io.FileDescriptor;
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -91,6 +89,8 @@ public class MediaPlayback implements
         AudioManager audioManager = (AudioManager) ctx.getSystemService(Context.AUDIO_SERVICE);
         int result = audioManager.requestAudioFocus(this, AudioManager.STREAM_MUSIC,
                 AudioManager.AUDIOFOCUS_GAIN);
+
+        audioManager.setMode(AudioManager.MODE_NORMAL);
 
         if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
             mp.start();

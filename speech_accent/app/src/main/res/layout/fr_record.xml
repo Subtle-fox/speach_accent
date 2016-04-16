@@ -23,7 +23,14 @@
             android:layout_margin="10dp"
             android:background="@drawable/btn_record" />
 
-
+        <Button
+            android:id="@+id/btn_play"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="10dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/btn_play"
+            android:visibility="gone"/>
     </RelativeLayout>
 
     <SeekBar
@@ -32,7 +39,17 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:padding="@dimen/default_margin"
-        android:progress="10" />
+        android:progress="10"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/textTimer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0:00"
+        android:layout_gravity="center_horizontal"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Display1"/>
+
 
     <Button
         android:id="@+id/btn_send"
@@ -44,16 +61,6 @@
         android:background="@color/red"
         android:padding="@dimen/default_padding"
         android:visibility="gone"/>
-
-    <Button
-        android:id="@+id/btn_play"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_margin="10dp"
-        android:layout_gravity="center_horizontal"
-        android:background="@drawable/btn_play"
-        android:visibility="gone"/>
-
 
     <LinearLayout
         android:layout_width="match_parent"

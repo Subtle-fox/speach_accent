@@ -33,6 +33,9 @@ public class RecordFragment extends InterchangableFragment {
     private MediaPlayback mediaPlayback;
     private SoundRecorder soundRecorder;
 
+    @InjectView(R.id.textTimer)
+    TextView txtTimer;
+
     @InjectView(R.id.ring_chart)
     RingChart ringChart;
 
@@ -77,6 +80,9 @@ public class RecordFragment extends InterchangableFragment {
         recordBtn.setBackgroundResource(R.drawable.btn_record);
         btnSend.setVisibility(View.VISIBLE);
         btnPlay.setVisibility(View.VISIBLE);
+        seekBar.setVisibility(View.VISIBLE);
+        recordBtn.setVisibility(View.GONE);
+        txtTimer.setVisibility(View.GONE);
         soundRecorder.stopRecording();
     }
 
@@ -118,7 +124,30 @@ public class RecordFragment extends InterchangableFragment {
 
             }
         });
-        soundRecorder = new SoundRecorder(getActivity());
+        soundRecorder = new SoundRecorder(getActivity(), new PlayerCallback() {
+            long startTime;
+
+            @Override
+            public void onStarted(int duration) {
+                startTime = System.currentTimeMillis();
+            }
+
+            @Override
+            public void onPlaying(int position) {
+                final long diff = System.currentTimeMillis() - startTime;
+                txtTimer.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        txtTimer.setText(Long.toString(diff / 1000));
+                    }
+                });
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
         mediaPlayback = new MediaPlayback(getActivity(), playerCallback);
     }
 
