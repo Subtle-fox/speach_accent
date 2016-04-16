@@ -2,60 +2,78 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/white">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:layout_gravity="center"
         android:orientation="vertical"
         android:paddingTop="@dimen/default_padding">
 
         <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_gravity="center"/>
-        </LinearLayout>
+            android:layout_width="360dp"
+            android:layout_height="130dp"
+            android:background="@drawable/graph" />
+    </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Последняя оценка"/>
+        android:layout_margin="@dimen/default_margin"
+        android:text="Последняя оценка"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:gravity="center"
         android:layout_margin="@dimen/default_margin"
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_margin="@dimen/activity_vertical_margin"
             android:layout_width="50dp"
-            android:layout_height="50dp" />
+            android:layout_height="50dp"
+            android:background="@drawable/star"
+            android:padding="@dimen/activity_vertical_margin" />
 
         <ImageView
-            android:layout_margin="@dimen/activity_vertical_margin"
             android:layout_width="50dp"
-            android:layout_height="50dp" />
-
+            android:layout_height="50dp"
+            android:background="@drawable/star"
+            android:padding="10dp" />
 
         <ImageView
-            android:layout_margin="@dimen/activity_vertical_margin"
             android:layout_width="50dp"
-            android:layout_height="50dp" />
-
+            android:layout_height="50dp"
+            android:background="@drawable/star"
+            android:padding="@dimen/activity_vertical_margin" />
 
         <ImageView
-            android:layout_margin="@dimen/activity_vertical_margin"
             android:layout_width="50dp"
-            android:layout_height="50dp" />
-
+            android:layout_height="50dp"
+            android:background="@drawable/star"
+            android:padding="@dimen/activity_vertical_margin" />
 
         <ImageView
-            android:layout_margin="@dimen/activity_vertical_margin"
             android:layout_width="50dp"
-            android:layout_height="50dp" />
-
+            android:layout_height="50dp"
+            android:background="@drawable/star"
+            android:padding="@dimen/activity_vertical_margin" />
     </LinearLayout>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/default_margin"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+        android:text="Изучаемый язык:" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
+        android:text="Китайский" />
 </LinearLayout>
