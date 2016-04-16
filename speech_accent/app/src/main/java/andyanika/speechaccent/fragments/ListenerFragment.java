@@ -1,7 +1,6 @@
 package andyanika.speechaccent.fragments;
 
 import android.os.Bundle;
-import android.support.annotation.StringRes;
 import android.text.Spannable;
 import android.text.style.BackgroundColorSpan;
 import android.util.Pair;
@@ -9,12 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -121,8 +120,8 @@ public class ListenerFragment extends InterchangableFragment {
             stop();
 
             String languageId = languageAdapter.getLanguageId(spinnerLanguage.getSelectedItemPosition());
-            String fileName = accentAdapter.getAccentFileName(spinnerAccent.getSelectedItemPosition());
-            mediaPlayback.play(languageId, fileName);
+            String accentFileNameId = accentAdapter.getAccentFileName(spinnerAccent.getSelectedItemPosition());
+            mediaPlayback.playAssets(languageId + File.separator + accentFileNameId);
         }
         playBtn.setBackgroundResource(R.drawable.btn_pause);
     }

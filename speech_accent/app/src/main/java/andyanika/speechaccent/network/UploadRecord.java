@@ -3,6 +3,7 @@ package andyanika.speechaccent.network;
 import java.io.File;
 import java.io.IOException;
 
+import andyanika.speechaccent.SoundRecorder;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -22,7 +23,7 @@ public class UploadRecord {
     String uploadRecord(String json) throws IOException {
         String url = "apps.engine/download_lang.json";
 
-        File file = new File("234");
+        File file = new File("kh");
         RequestBody body = RequestBody.create(MediaType.parse("audio/mpeg3"), file);
         Request request = new Request.Builder()
                 .url(url)

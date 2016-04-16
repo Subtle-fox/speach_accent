@@ -12,8 +12,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import andyanika.speechaccent.LanguageAdapter;
+import andyanika.speechaccent.MediaPlayback;
+import andyanika.speechaccent.PlayerCallback;
 import andyanika.speechaccent.R;
 import andyanika.speechaccent.RingChart;
+import andyanika.speechaccent.SoundRecorder;
 import andyanika.speechaccent.utils.SampleTextBuilder;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -27,6 +30,8 @@ public class RecordFragment extends InterchangableFragment {
     private static final String RECORD_PROGRESS = "record_progress";
     private boolean isRecorded;
     private int progress;
+    private MediaPlayback mediaPlayback;
+    private SoundRecorder soundRecorder;
 
     @InjectView(R.id.ring_chart)
     RingChart ringChart;
@@ -37,6 +42,9 @@ public class RecordFragment extends InterchangableFragment {
     @InjectView(R.id.btn_record)
     Button recordBtn;
 
+    @InjectView(R.id.btn_play)
+    Button btnPlay;
+
     @InjectView(R.id.textSampleText)
     TextView sampleText;
 
@@ -44,23 +52,32 @@ public class RecordFragment extends InterchangableFragment {
     Button btnSend;
 
     @OnClick(R.id.btn_record)
-    void onPlayClicked() {
+    void onRecordClicked() {
         if (isRecorded) {
-            save();
+            stopRecord();
         } else {
             record();
         }
         this.isRecorded = !isRecorded;
     }
 
+    @OnClick(R.id.btn_play)
+    void onPlayClicked() {
+        mediaPlayback.playRecorded(soundRecorder.getFileName());
+    }
+
     private void record() {
         recordBtn.setBackgroundResource(R.drawable.btn_stop_record);
         btnSend.setVisibility(View.GONE);
+        btnPlay.setVisibility(View.GONE);
+        soundRecorder.startRecording();
     }
 
-    private void save() {
+    private void stopRecord() {
         recordBtn.setBackgroundResource(R.drawable.btn_record);
         btnSend.setVisibility(View.VISIBLE);
+        btnPlay.setVisibility(View.VISIBLE);
+        soundRecorder.stopRecording();
     }
 
     @InjectView(R.id.spinner_native)
@@ -101,5 +118,38 @@ public class RecordFragment extends InterchangableFragment {
 
             }
         });
+        soundRecorder = new SoundRecorder(getActivity());
+        mediaPlayback = new MediaPlayback(getActivity(), playerCallback);
     }
+
+    PlayerCallback playerCallback = new PlayerCallback() {
+        int duration;
+
+        @Override
+        public void onStarted(int duration) {
+            this.duration = duration;
+            seekBar.setProgress(0);
+            ringChart.setProgress(0);
+            btnPlay.setBackgroundResource(R.drawable.btn_pause);
+        }
+
+        @Override
+        public void onPlaying(final int position) {
+            final int progress = position * 100 / duration;
+            seekBar.setProgress(progress);
+            ringChart.post(new Runnable() {
+                @Override
+                public void run() {
+                    ringChart.setProgress(progress);
+                }
+            });
+        }
+
+        @Override
+        public void onFinished() {
+            seekBar.setProgress(0);
+            ringChart.setProgress(0);
+            btnPlay.setBackgroundResource(R.drawable.btn_play);
+        }
+    };
 }

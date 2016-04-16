@@ -8,6 +8,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileDescriptor;
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -34,11 +35,25 @@ public class MediaPlayback implements
         this.playerCallback = playerCallback;
     }
 
-    public void play(String languageId, String accentFileNameId) {
+    public void playRecorded(String fileName) {
+        try {
+            mediaPlayer = new MediaPlayer();
+            mediaPlayer.setDataSource(fileName); //(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
+            mediaPlayer.setOnPreparedListener(this);
+            mediaPlayer.setOnErrorListener(this);
+            mediaPlayer.setOnCompletionListener(this);
+            mediaPlayer.prepareAsync();
+        } catch (IOException e) {
+            Toast.makeText(ctx, "Упс... :( Не удалось открыть звукозапись", Toast.LENGTH_SHORT).show();
+            reset();
+            e.printStackTrace();
+        }
+    }
+
+    public void playAssets(String fileName) {
         isPaused = false;
         try {
-            String fn = languageId + File.separator + accentFileNameId;
-            AssetFileDescriptor afd = ctx.getAssets().openFd(fn);
+            AssetFileDescriptor afd = ctx.getAssets().openFd(fileName);
 
             mediaPlayer = new MediaPlayer();
             mediaPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
