@@ -2,6 +2,7 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape xmlns:android="http://schemas.android.com/apk/res/android"
+            android:innerRadius="190dp"
             android:shape="oval">
             <solid
                 android:angle="270"
@@ -9,8 +10,8 @@
         </shape>
     </item>
     <item
-        android:width="40dp"
-        android:height="40dp"
+        android:width="30dp"
+        android:height="30dp"
         android:gravity="center"
         android:drawable="@drawable/circle_white"
         >

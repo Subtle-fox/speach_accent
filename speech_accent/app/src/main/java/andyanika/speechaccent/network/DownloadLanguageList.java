@@ -16,7 +16,7 @@ public class DownloadLanguageList {
     OkHttpClient client = new OkHttpClient();
 
     public String downloadLanguageList() throws IOException {
-        String url = "http://apps.engine.com/download_lang.json";
+        String url = "http://env-7092897.jelastic.regruhosting.ru/speechAccent/";
         Request request = new Request.Builder()
                 .url(url)
                 .build();

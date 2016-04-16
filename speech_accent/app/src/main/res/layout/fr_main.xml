@@ -25,15 +25,26 @@
             android:text="@string/greetings"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Display1" />
 
+        <TextView
+            android:id="@+id/my_results"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Мои оценки"
+            android:textAllCaps="true"
+            android:textSize="36sp"
+            android:layout_marginTop="24dp"
+            android:layout_alignParentBottom="true"
+            android:gravity="center_horizontal"/>
+
         <Button
             android:id="@+id/btn_listen"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_alignParentBottom="true"
+            android:layout_above="@id/my_results"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:background="@drawable/btn_round_green"
-            android:text="Слушать"
+            android:text="Оценить"
             android:textColor="@color/primary_dark_text_color" />
 
         <Button
@@ -44,7 +55,8 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:background="@drawable/btn_round_red"
-            android:text="Записать"
+            android:text="Научится"
             android:textColor="@color/primary_light_text_color" />
+
     </RelativeLayout>
 </RelativeLayout>

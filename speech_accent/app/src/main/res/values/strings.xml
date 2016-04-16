@@ -13,5 +13,5 @@
     <string name="italian_sample_text">"Oggi è stata una bella giornata! Stamattina abbiamo incontrato i nostri amici e abbiamo parlato tanto di varie cose. Dopo pranzo gli amici sono andati via. Siamo restati da soli. Il tempo era fantastico! Abbiamo deciso di andare a camminare un po'.  La natura era molto piacevole. Presto è calata la notte. Volevamo tornare perché dovevamo andare a dormire. Magari camminiamo un po' di più?"</string>
     <string name="which_language_native">Какой Ваш родной язык?</string>
     <string name="which_language_record">Какой на каком языке будете записывать?</string>
-    <string name="send_record">Отправить запись</string>
+    <string name="send_record">Отправить на проверку</string>
 </resources>

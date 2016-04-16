@@ -11,12 +11,14 @@ import android.view.MenuItem;
 import andyanika.speechaccent.fragments.ListenerFragment;
 import andyanika.speechaccent.fragments.MainFragment;
 import andyanika.speechaccent.fragments.RecordFragment;
+import andyanika.speechaccent.fragments.ResultFragment;
 import andyanika.speechaccent.network.DownloadTask;
 
 public class MainActivity extends AppCompatActivity implements OnChangeFragmentListener {
     public final static int FRAGMENT_MAIN = 2100;
     public final static int FRAGMENT_LISTEN = 2110;
     public final static int FRAGMENT_RECORD = 2120;
+    public final static int FRAGMENT_RESULT = 2030;
 
     private static final String FRAGMENT_ID = "current_fragment_id";
 
@@ -95,6 +97,8 @@ public class MainActivity extends AppCompatActivity implements OnChangeFragmentL
                 return new ListenerFragment();
             case FRAGMENT_RECORD:
                 return new RecordFragment();
+            case FRAGMENT_RESULT:
+                return new ResultFragment();
             case FRAGMENT_MAIN:
             default:
                 return new MainFragment();

@@ -15,14 +15,15 @@ public class DownloadTask extends AsyncTask<Void, Void, LanguageListJson> {
     @Override
     protected LanguageListJson doInBackground(Void... params) {
         try {
-            String res = new DownloadLanguageList().downloadLanguageList();
-            Log.i("NWK", res);
+            //String res = new DownloadLanguageList().downloadLanguageList();
+            //Log.i("NWK", res);
 
-            LanguageListJson result = new Gson().fromJson(res, LanguageListJson.class);
-            return result;
+            //LanguageListJson result = new Gson().fromJson(res, LanguageListJson.class);
+            //return result;
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
         }
+        return null;
+
     }
 }

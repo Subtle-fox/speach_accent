@@ -1,5 +1,7 @@
 package andyanika.speechaccent.fragments;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +13,11 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import andyanika.speechaccent.LanguageAdapter;
+import andyanika.speechaccent.MainActivity;
 import andyanika.speechaccent.MediaPlayback;
 import andyanika.speechaccent.PlayerCallback;
 import andyanika.speechaccent.R;
@@ -53,6 +59,19 @@ public class RecordFragment extends InterchangableFragment {
 
     @InjectView(R.id.btn_send)
     Button btnSend;
+
+    @OnClick(R.id.btn_send)
+    void onSendClicked() {
+        new AlertDialog.Builder(getActivity())
+                .setMessage("Ваша запись отправлена для оценки")
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        changeFragmentListener.onChange(MainActivity.FRAGMENT_MAIN);
+                    }
+                }).show();
+    }
 
     @OnClick(R.id.btn_record)
     void onRecordClicked() {
@@ -135,10 +154,12 @@ public class RecordFragment extends InterchangableFragment {
             @Override
             public void onPlaying(int position) {
                 final long diff = System.currentTimeMillis() - startTime;
+                final SimpleDateFormat sdf = new SimpleDateFormat("mm:ss");
+
                 txtTimer.post(new Runnable() {
                     @Override
                     public void run() {
-                        txtTimer.setText(Long.toString(diff / 1000));
+                        txtTimer.setText(sdf.format(new Date(diff)));
                     }
                 });
             }
