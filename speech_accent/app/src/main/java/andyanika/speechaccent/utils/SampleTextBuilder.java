@@ -29,7 +29,7 @@ public class SampleTextBuilder {
             case "french":
                 sampleTextId = R.string.fr_sample_text;
                 break;
-            case "italian":
+            case "italy":
                 sampleTextId = R.string.italian_sample_text;
                 break;
         }

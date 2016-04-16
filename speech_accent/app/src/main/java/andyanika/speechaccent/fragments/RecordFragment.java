@@ -42,7 +42,7 @@ public class RecordFragment extends InterchangableFragment {
     @InjectView(R.id.btn_send)
     Button btnSend;
 
-    @OnClick(R.id.btn_play)
+    @OnClick(R.id.btn_record)
     void onPlayClicked() {
         if (isRecorded) {
             save();

@@ -6,6 +6,7 @@
         <item>Китайский</item>
         <item>Французский</item>
         <item>Испанский</item>
+        <item>Итальянский</item>
     </string-array>
 
     <string-array name="language_ids">
@@ -14,6 +15,7 @@
         <item>china</item>
         <item>french</item>
         <item>span</item>
+        <item>italy</item>
     </string-array>
 
     <string-array name="accent_list">
@@ -23,6 +25,7 @@
         <item>Англичанин</item>
         <item>Француз</item>
         <item>Испанец</item>
+        <item>Итальянец</item>
     </string-array>
 
     <string-array name="accent_ids">
@@ -31,6 +34,7 @@
         <item>eng</item>
         <item>french</item>
         <item>span</item>
+        <item>italy</item>
     </string-array>
 
 </resources>

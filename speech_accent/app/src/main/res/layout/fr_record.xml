@@ -21,10 +21,9 @@
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
             android:layout_margin="10dp"
-            android:text="R"
             android:textSize="35sp"
             android:textColor="#ffffff"
-            android:background="@drawable/btn_round_red" />
+            android:background="@drawable/btn_record" />
     </RelativeLayout>
 
     <SeekBar
@@ -34,6 +33,17 @@
         android:layout_gravity="center_horizontal"
         android:padding="@dimen/default_margin"
         android:progress="10" />
+
+    <Button
+        android:id="@+id/btn_send"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/send_record"
+        android:layout_gravity="center"
+        android:textColor="@color/white"
+        android:background="@color/red"
+        android:padding="@dimen/default_padding"
+        android:visibility="visible"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -75,13 +85,4 @@
             android:textAppearance="?android:attr/textAppearanceSmall" />
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btn_send"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/send_record"
-        android:layout_gravity="center"
-        android:textColor="@color/white"
-        android:background="@color/red"
-        android:padding="@dimen/default_padding"/>
 </LinearLayout>
