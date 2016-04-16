@@ -4,10 +4,13 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import andyanika.speechaccent.fragments.ListenerFragment;
+import andyanika.speechaccent.fragments.MainFragment;
+import andyanika.speechaccent.fragments.RecordFragment;
 
 public class MainActivity extends AppCompatActivity implements OnChangeFragmentListener {
     final static int FRAGMENT_MAIN = 2100;

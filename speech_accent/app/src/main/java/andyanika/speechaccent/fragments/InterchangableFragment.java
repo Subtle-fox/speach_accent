@@ -1,4 +1,4 @@
-package andyanika.speechaccent;
+package andyanika.speechaccent.fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -6,6 +6,8 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+
+import andyanika.speechaccent.OnChangeFragmentListener;
 
 /**
  * Created by kolpakov on 11/04/16.

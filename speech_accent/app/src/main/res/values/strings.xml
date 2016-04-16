@@ -10,4 +10,7 @@
     <string name="ch_sample_text">"今天是美好的一天。从早上我们和朋友聊了很多。下午朋友们都走了。就剩我们了。天气非常好,我们决定随便走走。美丽的风景环绕着我们。晚上我们准备回去,要知道很快该睡觉了。或者可能我们再散会儿步?"</string>
     <string name="sp_sample_text">"Hoy fue un buen dia! Por la mañana nos encontramos con nuestros amigos y hablamos mucho de diferentes cosas. Despues del almuerzo nos quedamos solos. Hacia buen tiempo. Decidimos salir a caminar. La naturaleza era muy a gradable. Pronto atardecio. Quisimos volver a casa porque teniamos que ir a acostarnos. Podemos ir a andar un poco mas?"</string>
     <string name="ru_sample_text">"Сегодня был отличный день! С утра мы встретились с друзьями и долго разговаривали о разных вещах. После обеда друзья уехали. Мы остались одни. Погода была чудесная! Мы решили немного прогуляться. Природа вокруг нас очень радовала. Скоро наступил вечер. Мы хотели вернуться, ведь скоро нужно ложиться спать. А может, еще погуляем?"</string>
+    <string name="italian_sample_text">"Oggi è stata una bella giornata! Stamattina abbiamo incontrato i nostri amici e abbiamo parlato tanto di varie cose. Dopo pranzo gli amici sono andati via. Siamo restati da soli. Il tempo era fantastico! Abbiamo deciso di andare a camminare un po'.  La natura era molto piacevole. Presto è calata la notte. Volevamo tornare perché dovevamo andare a dormire. Magari camminiamo un po' di più?"</string>
+    <string name="which_language_native">Какой Ваш родной язык?</string>
+    <string name="which_language_record">Какой на каком языке будете записывать?</string>
 </resources>

@@ -22,12 +22,7 @@ public class AccentAdapter extends ArrayAdapter {
         accentNames = context.getResources().getStringArray(R.array.accent_list);
     }
 
-    void setData(List<Pair<Integer, String>> ids) {
-        clear();
-        addAll(ids);
-    }
-
-    String getAccentFileName(int position) {
+    public String getAccentFileName(int position) {
         return ids.get(position).second;
     }
 

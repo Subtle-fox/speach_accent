@@ -1,7 +1,6 @@
-package andyanika.speechaccent;
+package andyanika.speechaccent.fragments;
 
 import android.os.Bundle;
-import android.support.annotation.IntegerRes;
 import android.support.annotation.StringRes;
 import android.text.Spannable;
 import android.text.style.BackgroundColorSpan;
@@ -19,6 +18,11 @@ import android.widget.TextView;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import andyanika.speechaccent.AccentAdapter;
+import andyanika.speechaccent.MediaPlayback;
+import andyanika.speechaccent.PlayerCallback;
+import andyanika.speechaccent.R;
+import andyanika.speechaccent.RingChart;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
@@ -220,7 +224,11 @@ public class ListenerFragment extends InterchangableFragment {
     }
 
     private void markText() {
-        Spannable spanText = Spannable.Factory.getInstance().newSpannable("123123123");
+        String text = sampleText.getText().toString();
+
+
+
+        Spannable spanText = Spannable.Factory.getInstance().newSpannable(text);
         spanText.setSpan(new BackgroundColorSpan(0xFFFFFF00), 14, 19, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         sampleText.setText(spanText);
     }
