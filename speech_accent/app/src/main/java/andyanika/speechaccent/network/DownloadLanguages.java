@@ -1,28 +1,33 @@
 package andyanika.speechaccent.network;
 
-import com.google.gson.Gson;
-
 import java.io.IOException;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 /**
  * Created by Andrey Kolpakov on 16.04.2016
  * for It-Atlantic
  */
-public class DownloadLanguageList {
+public class DownloadLanguages {
     OkHttpClient client = new OkHttpClient();
 
     public String downloadLanguageList() throws IOException {
-        String url = "http://env-7092897.jelastic.regruhosting.ru/speechAccent/";
+        String url = Url.getUrl(Url.LANGUAGE);
         Request request = new Request.Builder()
                 .url(url)
                 .build();
 
         Response response = client.newCall(request).execute();
-        String raw = response.body().string();
+        if (!response.isSuccessful()) {
+            throw new IOException("Unexpected code " + response);
+        }
+
+        ResponseBody body = response.body();
+        String raw = body.string();
+        body.close();
         return raw;
     }
 }

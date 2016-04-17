@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import andyanika.speechaccent.SoundRecorder;
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -15,16 +16,24 @@ import okhttp3.Response;
  * for It-Atlantic
  */
 public class UploadRecord {
-    public static final MediaType JSON
+    public static final MediaType SOUND
             = MediaType.parse("application/json; charset=utf-8");
 
     OkHttpClient client = new OkHttpClient();
 
-    String uploadRecord(String json) throws IOException {
+    String uploadRecord(String language, String accent, String fileName) throws IOException {
         String url = "apps.engine/download_lang.json";
 
-        File file = new File("kh");
-        RequestBody body = RequestBody.create(MediaType.parse("audio/mpeg3"), file);
+        File file = new File(fileName);
+        RequestBody body = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("language", language)
+                .addFormDataPart("accent", accent)
+                .addFormDataPart("file", "sample.png",
+                        RequestBody.create(SOUND, file))
+                .build();
+
+//        RequestBody body = RequestBody.create(MediaType.parse("audio/mpeg3"), file);
         Request request = new Request.Builder()
                 .url(url)
                 .post(body)
