@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -25,55 +25,19 @@
         android:text="Последняя оценка"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Title" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:gravity="center"
-        android:layout_margin="@dimen/default_margin"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@drawable/star"
-            android:padding="@dimen/activity_vertical_margin" />
-
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@drawable/star"
-            android:padding="10dp" />
-
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@drawable/star"
-            android:padding="@dimen/activity_vertical_margin" />
-
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@drawable/star"
-            android:padding="@dimen/activity_vertical_margin" />
-
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@drawable/star"
-            android:padding="@dimen/activity_vertical_margin" />
-    </LinearLayout>
+    <include layout="@layout/star_layout" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/default_margin"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-        android:text="Изучаемый язык:" />
+        android:text="Изучаемый язык:"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/default_margin"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
-        android:text="Китайский" />
+        android:text="Китайский"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2" />
 </LinearLayout>

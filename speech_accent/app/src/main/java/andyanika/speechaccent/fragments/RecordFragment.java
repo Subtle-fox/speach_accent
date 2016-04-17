@@ -202,4 +202,19 @@ public class RecordFragment extends InterchangableFragment {
             btnPlay.setBackgroundResource(R.drawable.btn_play);
         }
     };
+
+
+    @Override
+    public void onDestroy() {
+        if (soundRecorder != null) {
+            soundRecorder.stopRecording();
+            soundRecorder = null;
+        }
+
+
+        if (mediaPlayback != null) {
+            mediaPlayback.stop();
+            mediaPlayback = null;
+        }
+    }
 }

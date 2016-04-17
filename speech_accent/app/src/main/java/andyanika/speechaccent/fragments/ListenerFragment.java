@@ -37,6 +37,11 @@ public class ListenerFragment extends InterchangableFragment {
     private AccentAdapter accentAdapter;
     private LanguageAdapter languageAdapter;
 
+    @OnClick(R.id.btn_rate)
+    void onRateClicked() {
+        new RatingFragment().show(getFragmentManager(), "rating");
+    }
+
     @InjectView(R.id.ring_chart)
     RingChart ringChart;
 
