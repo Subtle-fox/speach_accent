@@ -139,7 +139,7 @@ public class MediaPlayback implements
         }
 
         stopNotificator();
-        playerCallback.onFinished();
+        playerCallback.onReseted();
     }
 
     public boolean isPaused() {
