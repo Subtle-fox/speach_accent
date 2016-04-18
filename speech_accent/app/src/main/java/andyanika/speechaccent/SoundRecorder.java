@@ -3,7 +3,6 @@ package andyanika.speechaccent;
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaRecorder;
-import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -23,12 +22,13 @@ public class SoundRecorder {
     private Timer playNotificator;
     private RecorderCallback recorderCallback;
 
-    public SoundRecorder(Context ctx, RecorderCallback recorderCallback){
+    public SoundRecorder(Context ctx, RecorderCallback recorderCallback) {
         this.ctx = ctx;
         this.recorderCallback = recorderCallback;
-        fileName = Environment.getExternalStorageDirectory()
-//        ctx.getCacheDir().getAbsolutePath()
-                + File.separator + "audiorecord.3gp";
+        fileName =
+//                Environment.getExternalStorageDirectory()
+                ctx.getCacheDir().getAbsolutePath()
+                        + File.separator + "audiorecord.3gp";
     }
 
     public void startRecording() {
@@ -40,7 +40,7 @@ public class SoundRecorder {
         try {
             file.createNewFile();
 
-            AudioManager audioManager = (AudioManager)ctx.getSystemService(Context.AUDIO_SERVICE);
+            AudioManager audioManager = (AudioManager) ctx.getSystemService(Context.AUDIO_SERVICE);
             audioManager.setMode(AudioManager.MODE_NORMAL);
             int result = audioManager.requestAudioFocus(new AudioManager.OnAudioFocusChangeListener() {
                                                             @Override

@@ -3,10 +3,8 @@ package andyanika.speechaccent.network;
 import java.io.File;
 import java.io.IOException;
 
-import andyanika.speechaccent.SoundRecorder;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
-import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -18,8 +16,6 @@ import okhttp3.Response;
 public class UploadRecord {
     public static final MediaType SOUND
             = MediaType.parse("application/json; charset=utf-8");
-
-    OkHttpClient client = new OkHttpClient();
 
     String uploadRecord(String language, String accent, String fileName) throws IOException {
         String url = "apps.engine/download_lang.json";
@@ -38,7 +34,7 @@ public class UploadRecord {
                 .url(url)
                 .post(body)
                 .build();
-        Response response = client.newCall(request).execute();
+        Response response = Url.getClient().newCall(request).execute();
         return response.body().string();
     }
 }

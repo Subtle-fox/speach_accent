@@ -13,8 +13,6 @@ import okhttp3.ResponseBody;
  * for It-Atlantic
  */
 public class DownloadRecord {
-    OkHttpClient client = new OkHttpClient();
-
     String run(String fileName) throws IOException {
         HttpUrl url = HttpUrl.parse(Url.getUrl(Url.RATE)).newBuilder()
                 .addQueryParameter("filename", fileName).build();
@@ -23,7 +21,7 @@ public class DownloadRecord {
                 .url(url)
                 .build();
 
-        Response response = client.newCall(request).execute();
+        Response response = Url.getClient().newCall(request).execute();
         if (!response.isSuccessful()) {
             throw new IOException("Unexpected code " + response);
         }
