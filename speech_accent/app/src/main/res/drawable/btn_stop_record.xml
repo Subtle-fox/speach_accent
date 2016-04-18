@@ -9,5 +9,5 @@
         </shape>
     </item>
 
-    <item android:drawable="@drawable/stop" />
+    <item android:drawable="@drawable/ic_stop" />
 </layer-list>

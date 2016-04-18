@@ -75,6 +75,11 @@ public class MediaPlayback implements
         if (mediaPlayer != null) {
             mediaPlayer.pause();
         }
+        if (playNotificator != null) {
+            playNotificator.cancel();
+            playNotificator = null;
+        }
+        playerCallback.onPaused();
     }
 
     public void resume() {
@@ -82,6 +87,7 @@ public class MediaPlayback implements
         if (mediaPlayer != null) {
             mediaPlayer.start();
         }
+        runNotificator();
     }
 
     @Override
@@ -94,14 +100,8 @@ public class MediaPlayback implements
 
         if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
             mp.start();
+            runNotificator();
             playerCallback.onStarted(mp.getDuration());
-            playNotificator = new Timer();
-            playNotificator.scheduleAtFixedRate(new TimerTask() {
-                @Override
-                public void run() {
-                    playerCallback.onPlaying(mediaPlayer.getCurrentPosition());
-                }
-            }, 1000, 1000);
         } else {
             reset();
         }
@@ -119,8 +119,10 @@ public class MediaPlayback implements
         if (focusChange == AudioManager.AUDIOFOCUS_GAIN) {
             mediaPlayer.start();
             playerCallback.onStarted(mediaPlayer.getDuration());
-        } else {
+        } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS) {
             reset();
+        } else {
+            pause();
         }
     }
 
@@ -136,15 +138,28 @@ public class MediaPlayback implements
             mediaPlayer.reset();
         }
 
-        if (playNotificator != null) {
-            playNotificator.cancel();
-            playNotificator = null;
-        }
-
+        stopNotificator();
         playerCallback.onFinished();
     }
 
     public boolean isPaused() {
         return isPaused;
+    }
+
+    private void runNotificator() {
+        playNotificator = new Timer();
+        playNotificator.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                playerCallback.onPlaying(mediaPlayer.getCurrentPosition());
+            }
+        }, 1000, 1000);
+    }
+
+    private void stopNotificator() {
+        if (playNotificator != null) {
+            playNotificator.cancel();
+            playNotificator = null;
+        }
     }
 }

@@ -1,4 +1,4 @@
-package andyanika.speechaccent;
+package andyanika.speechaccent.fragments;
 
 /**
  * Created by Andrey Kolpakov on 11.04.2016

@@ -9,5 +9,5 @@
         </shape>
     </item>
 
-    <item android:drawable="@drawable/pause" />
+    <item android:drawable="@drawable/ic_pause" />
 </layer-list>

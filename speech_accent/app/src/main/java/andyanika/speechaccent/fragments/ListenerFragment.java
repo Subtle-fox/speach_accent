@@ -31,11 +31,14 @@ import butterknife.OnClick;
 public class ListenerFragment extends InterchangableFragment {
     private static final String PLAY_PROGRESS = "play_progress";
 
-    private boolean isPaused = true;
+    private boolean isPlaying = false;
     private int progress;
     private MediaPlayback mediaPlayback;
     private AccentAdapter accentAdapter;
     private LanguageAdapter languageAdapter;
+
+    @InjectView(R.id.btn_rate)
+    Button btnRate;
 
     @OnClick(R.id.btn_rate)
     void onRateClicked() {
@@ -49,19 +52,18 @@ public class ListenerFragment extends InterchangableFragment {
     SeekBar seekBar;
 
     @InjectView(R.id.btn_play)
-    Button playBtn;
+    Button btnPlay;
 
     @InjectView(R.id.textSampleText)
     TextView sampleText;
 
     @OnClick(R.id.btn_play)
     void onPlayClicked() {
-        if (isPaused) {
+        if (!isPlaying) {
             play();
         } else {
             pause();
         }
-        this.isPaused = !isPaused;
     }
 
     @InjectView(R.id.spinner_language)
@@ -114,7 +116,7 @@ public class ListenerFragment extends InterchangableFragment {
             }
         });
 
-        playBtn.setBackgroundResource(R.drawable.btn_play);
+        btnPlay.setBackgroundResource(R.drawable.btn_play);
         mediaPlayback = new MediaPlayback(getActivity(), playerCallback);
     }
 
@@ -128,19 +130,26 @@ public class ListenerFragment extends InterchangableFragment {
             String accentFileNameId = accentAdapter.getAccentFileName(spinnerAccent.getSelectedItemPosition());
             mediaPlayback.playAssets(languageId + File.separator + accentFileNameId);
         }
-        playBtn.setBackgroundResource(R.drawable.btn_pause);
+        btnPlay.setBackgroundResource(R.drawable.btn_pause);
+        isPlaying = true;
     }
 
     private void pause() {
+        isPlaying = false;
         mediaPlayback.pause();
-        playBtn.setBackgroundResource(R.drawable.btn_play);
+        btnPlay.setBackgroundResource(R.drawable.btn_play);
     }
 
     private void stop() {
+        isPlaying = false;
         mediaPlayback.stop();
+        changeViewsOnStop();
+    }
+
+    private void changeViewsOnStop() {
         seekBar.setProgress(0);
         ringChart.setProgress(0);
-        playBtn.setBackgroundResource(R.drawable.btn_play);
+        btnPlay.setBackgroundResource(R.drawable.btn_play);
     }
 
     private void updateAccentList(int languageId) {
@@ -185,7 +194,8 @@ public class ListenerFragment extends InterchangableFragment {
             this.duration = duration;
             seekBar.setProgress(0);
             ringChart.setProgress(0);
-            playBtn.setBackgroundResource(R.drawable.btn_pause);
+            btnPlay.setBackgroundResource(R.drawable.btn_pause);
+            btnRate.setVisibility(View.GONE);
         }
 
         @Override
@@ -201,10 +211,22 @@ public class ListenerFragment extends InterchangableFragment {
         }
 
         @Override
+        public void onPaused() {
+            btnPlay.setBackgroundResource(R.drawable.btn_play);
+        }
+
+        @Override
+        public void onReseted() {
+            changeViewsOnStop();
+            btnRate.setVisibility(View.GONE);
+        }
+
+        @Override
         public void onFinished() {
-            seekBar.setProgress(0);
-            ringChart.setProgress(0);
-            playBtn.setBackgroundResource(R.drawable.btn_play);
+            seekBar.setProgress(100);
+            ringChart.setProgress(100);
+            btnPlay.setBackgroundResource(R.drawable.btn_play);
+            btnRate.setVisibility(View.VISIBLE);
         }
     };
 
@@ -216,11 +238,8 @@ public class ListenerFragment extends InterchangableFragment {
 
     private void markText() {
         String text = sampleText.getText().toString();
-
-
-
         Spannable spanText = Spannable.Factory.getInstance().newSpannable(text);
-        spanText.setSpan(new BackgroundColorSpan(0xFFFFFF00), 14, 19, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spanText.setSpan(new BackgroundColorSpan(0xddFFFF00), 0, 110, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         sampleText.setText(spanText);
     }
 }

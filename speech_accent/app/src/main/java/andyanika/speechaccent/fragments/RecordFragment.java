@@ -21,6 +21,7 @@ import andyanika.speechaccent.MainActivity;
 import andyanika.speechaccent.MediaPlayback;
 import andyanika.speechaccent.PlayerCallback;
 import andyanika.speechaccent.R;
+import andyanika.speechaccent.RecorderCallback;
 import andyanika.speechaccent.RingChart;
 import andyanika.speechaccent.SoundRecorder;
 import andyanika.speechaccent.utils.SampleTextBuilder;
@@ -96,12 +97,7 @@ public class RecordFragment extends InterchangableFragment {
     }
 
     private void stopRecord() {
-        recordBtn.setBackgroundResource(R.drawable.btn_record);
-        btnSend.setVisibility(View.VISIBLE);
-        btnPlay.setVisibility(View.VISIBLE);
-        seekBar.setVisibility(View.VISIBLE);
-        recordBtn.setVisibility(View.GONE);
-        txtTimer.setVisibility(View.GONE);
+        changeViewsOnStop();
         soundRecorder.stopRecording();
     }
 
@@ -143,7 +139,7 @@ public class RecordFragment extends InterchangableFragment {
 
             }
         });
-        soundRecorder = new SoundRecorder(getActivity(), new PlayerCallback() {
+        soundRecorder = new SoundRecorder(getActivity(), new RecorderCallback() {
             long startTime;
 
             @Override
@@ -166,10 +162,19 @@ public class RecordFragment extends InterchangableFragment {
 
             @Override
             public void onFinished() {
-
+                changeViewsOnStop();
             }
         });
         mediaPlayback = new MediaPlayback(getActivity(), playerCallback);
+    }
+
+    private void changeViewsOnStop() {
+        recordBtn.setBackgroundResource(R.drawable.btn_record);
+        btnSend.setVisibility(View.VISIBLE);
+        btnPlay.setVisibility(View.VISIBLE);
+        seekBar.setVisibility(View.VISIBLE);
+        recordBtn.setVisibility(View.GONE);
+        txtTimer.setVisibility(View.GONE);
     }
 
     PlayerCallback playerCallback = new PlayerCallback() {
@@ -193,6 +198,18 @@ public class RecordFragment extends InterchangableFragment {
                     ringChart.setProgress(progress);
                 }
             });
+        }
+
+        @Override
+        public void onPaused() {
+            btnPlay.setBackgroundResource(R.drawable.btn_play);
+        }
+
+        @Override
+        public void onReseted() {
+            seekBar.setProgress(0);
+            ringChart.setProgress(0);
+            btnPlay.setBackgroundResource(R.drawable.btn_play);
         }
 
         @Override

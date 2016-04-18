@@ -21,11 +21,11 @@ public class SoundRecorder {
     private MediaRecorder mediaRecorder;
     private final String fileName;
     private Timer playNotificator;
-    private PlayerCallback playerCallback;
+    private RecorderCallback recorderCallback;
 
-    public SoundRecorder(Context ctx, PlayerCallback playerCallback){
+    public SoundRecorder(Context ctx, RecorderCallback recorderCallback){
         this.ctx = ctx;
-        this.playerCallback = playerCallback;
+        this.recorderCallback = recorderCallback;
         fileName = Environment.getExternalStorageDirectory()
 //        ctx.getCacheDir().getAbsolutePath()
                 + File.separator + "audiorecord.3gp";
@@ -52,10 +52,18 @@ public class SoundRecorder {
 
             mediaRecorder = new MediaRecorder();
             mediaRecorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
-            mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+            mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.DEFAULT);
             mediaRecorder.setOutputFile(getFileName());
             mediaRecorder.setMaxDuration(2 * 60 * 1000);
             mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
+            mediaRecorder.setOnInfoListener(new MediaRecorder.OnInfoListener() {
+                @Override
+                public void onInfo(MediaRecorder mr, int what, int extra) {
+                    if (what == MediaRecorder.MEDIA_RECORDER_INFO_MAX_DURATION_REACHED) {
+                        recorderCallback.onFinished();
+                    }
+                }
+            });
 
             try {
                 mediaRecorder.prepare();
@@ -64,10 +72,10 @@ public class SoundRecorder {
                 playNotificator.scheduleAtFixedRate(new TimerTask() {
                     @Override
                     public void run() {
-                        playerCallback.onPlaying(0);
+                        recorderCallback.onPlaying(0);
                     }
                 }, 1000, 1000);
-                playerCallback.onStarted(2000);
+                recorderCallback.onStarted(2000);
             } catch (IOException e) {
                 Log.e(SoundRecorder.class.getSimpleName(), "prepare() failed");
             }
@@ -87,6 +95,7 @@ public class SoundRecorder {
         if (playNotificator != null) {
             playNotificator.cancel();
         }
+        recorderCallback.onFinished();
     }
 
     public String getFileName() {

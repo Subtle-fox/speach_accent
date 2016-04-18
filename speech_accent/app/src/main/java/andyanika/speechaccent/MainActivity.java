@@ -10,6 +10,7 @@ import android.view.MenuItem;
 
 import andyanika.speechaccent.fragments.ListenerFragment;
 import andyanika.speechaccent.fragments.MainFragment;
+import andyanika.speechaccent.fragments.OnChangeFragmentListener;
 import andyanika.speechaccent.fragments.RecordFragment;
 import andyanika.speechaccent.fragments.ResultFragment;
 import andyanika.speechaccent.network.DownloadTask;
