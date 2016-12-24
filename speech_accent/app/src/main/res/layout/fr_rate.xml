@@ -13,17 +13,21 @@
         android:orientation="horizontal">
 
         <Button
+            style="?android:attr/buttonBarStyle"
             android:id="@+id/btn_ok"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:background="@null"
             android:text="@android:string/ok" />
 
         <Button
+            style="?android:attr/buttonBarStyle"
             android:id="@+id/btn_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@null"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@android:string/cancel" />
     </LinearLayout>
 
